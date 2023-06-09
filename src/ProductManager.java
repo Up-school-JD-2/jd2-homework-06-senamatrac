@@ -1,8 +1,5 @@
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 public class ProductManager {
@@ -116,6 +113,8 @@ public class ProductManager {
     // örn:
     // category-1 105.2
     // category-2 45.0
-    return products.values().stream().collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(Product::getPrice)));
+
+    ToDoubleFunction<Product> totalPriceFunction = product -> product.getStock() * product.getPrice();
+    return products.values().stream().collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(totalPriceFunction)));
   }
 }
